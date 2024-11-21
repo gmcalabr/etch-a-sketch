@@ -1,0 +1,32 @@
+body {
+    text-align: center;
+    background-color: darkolivegreen;
+}
+
+#wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
+    justify-content: center;
+}
+
+.cell {
+    background-color: gray;
+    color: antiquewhite;
+    padding: 0px;
+    font-size: 30px;
+    text-align: center;
+    align-content: center;
+    pointer-events: auto;
+}
+
+.cell:hover {
+    background: darkgray;
+}
