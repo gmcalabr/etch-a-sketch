@@ -25,6 +25,20 @@ function onMouseOver(event) {
     event.target.style.backgroundColor = "#282828";
 };
 
+// create mouse up/down tracking
+let isMouseDown = false;
+document.addEventListener("mousedown", () => (isMouseDown = true));
+document.addEventListener("mouseup", () => (isMouseDown = false));
+
+document.addEventListener("mousemove", (event) => {
+    if (isMouseDown) {
+        const hoveredElement = document.elementFromPoint(event.clientX, event.clientY);
+        if (hoveredElement && hoveredElement.classList.contains("cell")) {
+            hoveredElement.style.backgroundColor = "red";
+        };
+    };
+});
+
 function onMouseDown(event) {
     event.target.style.backgroundColor = "#CC2222";
 };
