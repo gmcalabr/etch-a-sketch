@@ -1,46 +1,42 @@
-document.addEventListener("DOMContentLoaded", declareVars());
+// document.addEventListener("DOMContentLoaded", );
 
-pixelCreatorLoop();
+
+// Create/assign event for button click
+const handleButtonClick = (event) => {
+    let target = event.target.innerText;
+
+    if (target == "Click here to create a field") {
+        startButton();
+    };
+};
+
+createField.addEventListener("click", handleButtonClick);
+
+
+function startButton() {
+    varsOut = declareVars();
+    resizeWrap(varsOut.windowWidth);
+    pixelCreatorLoop(varsOut.totalPixels, varsOut.pixelDims);
+}
 
 function declareVars() {
     //Establish variables
     // Ask user for width of etch-a-sketch in pixels
-    xPixels = prompt("What would you like your etch-a-sketch resolution to be (max 1000)");
+    let xPixels = prompt("Desired screen X/Y resolution? (max 1000)");
     // Set total window width
-    windowWidth = 1000;
+    let windowWidth = 1000;
     // Calculate the width/height of a 'pixel' in px
-    pixelDims = Math.floor(windowWidth/xPixels);
-    // For future programming reference, calculate total 'loss' by rounding pixel size down
-    pixelError = (((windowWidth / xPixels) - Math.floor(windowWidth / xPixels)) * xPixels);
+    let pixelDims = Math.floor(windowWidth / xPixels);
     // Calculate the total 'pixel' count in the grid
-    totalPixels = xPixels ** 2;
-    // Calculate the total 'overage' of field compared to pixelDims x xPixels
-    fieldOverage = windowWidth - (pixelDims * xPixels);
-    windowWidth = windowWidth - fieldOverage;
-    // Resize wrap section to match even multiple of pixel size
-    resizeWrap(windowWidth);
-};
+    let totalPixels = xPixels ** 2;
 
-function onMouseOver(event) {
-    event.target.style.backgroundColor = "#282828";
-};
-
-// create mouse up/down tracking
-let isMouseDown = false;
-document.addEventListener("mousedown", () => (isMouseDown = true));
-document.addEventListener("mouseup", () => (isMouseDown = false));
-
-document.addEventListener("mousemove", (event) => {
-    if (isMouseDown) {
-        const hoveredElement = document.elementFromPoint(event.clientX, event.clientY);
-        if (hoveredElement && hoveredElement.classList.contains("cell")) {
-            hoveredElement.style.backgroundColor = "red";
-        };
+    const varsOut = {
+        "windowWidth": windowWidth,
+        "pixelDims": pixelDims,
+        "totalPixels": totalPixels
     };
-});
-
-function onMouseDown(event) {
-    event.target.style.backgroundColor = "#CC2222";
+    
+    return varsOut;
 };
 
 function resizeWrap(windowWidth) {
@@ -50,16 +46,40 @@ function resizeWrap(windowWidth) {
     wrap.style.maxwidth = `${windowWidth}px`
 };
 
-function pixelCreatorLoop() {
+function mouseTracker() {
+    // create mouse up/down tracking
+    let isMouseDown = false;
+    document.addEventListener("mousedown", () => (isMouseDown = true));
+    document.addEventListener("mouseup", () => (isMouseDown = false));
+
+    document.addEventListener("mousemove", (event) => {
+        if (isMouseDown) {
+            const hoveredElement = document.elementFromPoint(event.clientX, event.clientY);
+            if (hoveredElement && hoveredElement.classList.contains("cell")) {
+                hoveredElement.style.backgroundColor = "red";
+            };
+        };
+    });
+};
+
+function onMouseOver(event) {
+    event.target.style.backgroundColor = "#282828";
+};
+
+function onMouseDown(event) {
+    event.target.style.backgroundColor = "#CC2222";
+};
+
+function pixelCreatorLoop(totalPixels, pixelDims) {
 // Loop the pixel creator
     let n = 0;
     while (n < totalPixels) {
-        addCell();
+        addCell(pixelDims);
         n++;
     };
 };
 
-function addCell() {
+function addCell(pixelDims) {
     // Adds correct number of <div id="cell"> to the container
     console.log("cell count")
     const container = document.querySelector("#container");
