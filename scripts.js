@@ -1,7 +1,5 @@
-// document.addEventListener("DOMContentLoaded", );
+// document.addEventListener("DOMContentLoaded", startup());
 
-
-// Create/assign event for button click
 const handleButtonClick = (event) => {
     let target = event.target.innerText;
 
@@ -12,11 +10,45 @@ const handleButtonClick = (event) => {
 
 createField.addEventListener("click", handleButtonClick);
 
-
 function startButton() {
     varsOut = declareVars();
+    restartWrap();
+    mouseTracker();
     resizeWrap(varsOut.windowWidth);
     pixelCreatorLoop(varsOut.totalPixels, varsOut.pixelDims);
+}
+
+function mouseTracker() {
+    // create mouse up/down tracking
+    let isMouseDown = false;
+    document.addEventListener("mousedown", () => (isMouseDown = true));
+    document.addEventListener("mouseup", () => (isMouseDown = false));
+    
+    document.addEventListener("mousemove", (event) => {
+        if (isMouseDown) {
+            const hoveredElement = document.elementFromPoint(event.clientX, event.clientY);
+            if (hoveredElement && hoveredElement.classList.contains("cell")) {
+                hoveredElement.style.backgroundColor = "red";
+            };
+        };
+    });
+};
+
+function restartWrap() {
+    // Delete div wrap
+    const body = document.querySelector("body");
+    const wrap = document.querySelector("#wrap");
+    body.removeChild(wrap);
+    
+    // Create div wrap
+    const newWrap = document.createElement("div");
+    newWrap.id = "wrap";
+    body.appendChild(newWrap);
+    
+    // Create div container
+    const container = document.createElement("div");
+    container.id = "container";
+    newWrap.appendChild(container);
 }
 
 function declareVars() {
@@ -29,7 +61,7 @@ function declareVars() {
     let pixelDims = Math.floor(windowWidth / xPixels);
     // Calculate the total 'pixel' count in the grid
     let totalPixels = xPixels ** 2;
-
+    
     const varsOut = {
         "windowWidth": windowWidth,
         "pixelDims": pixelDims,
@@ -46,21 +78,7 @@ function resizeWrap(windowWidth) {
     wrap.style.maxwidth = `${windowWidth}px`
 };
 
-function mouseTracker() {
-    // create mouse up/down tracking
-    let isMouseDown = false;
-    document.addEventListener("mousedown", () => (isMouseDown = true));
-    document.addEventListener("mouseup", () => (isMouseDown = false));
 
-    document.addEventListener("mousemove", (event) => {
-        if (isMouseDown) {
-            const hoveredElement = document.elementFromPoint(event.clientX, event.clientY);
-            if (hoveredElement && hoveredElement.classList.contains("cell")) {
-                hoveredElement.style.backgroundColor = "red";
-            };
-        };
-    });
-};
 
 function onMouseOver(event) {
     event.target.style.backgroundColor = "#282828";
@@ -71,7 +89,7 @@ function onMouseDown(event) {
 };
 
 function pixelCreatorLoop(totalPixels, pixelDims) {
-// Loop the pixel creator
+    // Loop the pixel creator
     let n = 0;
     while (n < totalPixels) {
         addCell(pixelDims);
@@ -83,15 +101,15 @@ function addCell(pixelDims) {
     // Adds correct number of <div id="cell"> to the container
     console.log("cell count")
     const container = document.querySelector("#container");
-
+    
     const pixel = document.createElement("div");
     pixel.classList.add("cell");
     pixel.style.width = `${pixelDims}px`
     pixel.style.height = `${pixelDims}px`
-
+    
     pixel.addEventListener("mouseover", onMouseOver);
     pixel.addEventListener("mousedown", onMouseDown);
-
+    
     container.appendChild(pixel);
     return;
 };
