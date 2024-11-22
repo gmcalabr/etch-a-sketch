@@ -3,6 +3,11 @@ body {
     background-color: darkolivegreen;
 }
 
+button {
+    color: blue;
+    background-color: red;
+}
+
 #wrap {
     max-width: 1000px;
     margin: 0 auto;
